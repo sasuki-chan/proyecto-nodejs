@@ -1,0 +1,8 @@
+
+				Version 2.0.2 del proyecto
+
+			Fecha de inicio: martes 17 de Mayo del 2016
+
+Se le ha actualizado sobre la version 2.0.1:
+	1- Se utiliza el modulo cookie-session en vez de express-session
+

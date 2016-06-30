@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6 lt8"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7 lt8"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8 lt8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<html lang="en" class="no-js" ng-app='app'>
+    <head>
+        <meta charset="UTF-8" />
+        <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  -->
+        <title>Notas</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <meta name="description" content="Login and Registration Form with HTML5 and CSS3" />
+        <meta name="keywords" content="html5, css3, form, switch, animation, :target, pseudo-class" />
+        <meta name="author" content="Codrops" />
+        <link rel="shortcut icon" href="../favicon.ico"> 
+        <link rel="stylesheet" type="text/css" href="css/demo.css" />
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <link rel="stylesheet" type="text/css" href="css/animate-custom.css" />
+        <link rel="stylesheet" type="text/css" href="notas.css" />
+    </head>
+    <body>
+    <nav>
+            <!-- Listado de Navegación -->
+            <ul class="menu">
+                <li><a href="/newdata.html">Nueva Info General</a></li>
+                <li><a href="/tablas.html">Informacion general </a></li>  
+                <li><a href="/registrar-material.html">Material Entregado</a></li>
+                <li><a href="/listado_entregado.html">Listado Entregado</a></li>
+                <li><a href="/listado_notas.html">Listado Notas</a></li>
+                <li><a href="/logout">Salir</a></li>
+            </ul>
+    </nav>
+    <br></br> <br></br>
+        <!-- Termina listado de Navegación -->
+
+        <div class="container">
+            <section>               
+                <div id="container_demo" >
+                    <!-- hidden anchor to stop jump http://www.css3create.com/Astuce-Empecher-le-scroll-avec-l-utilisation-de-target#wrap4  -->
+                    <a class="hiddenanchor" id="toregister"></a>
+                    <a class="hiddenanchor" id="tologin"></a>
+                    <div id="wrapper">
+                        <div ng-controller = "Register" id="login" class="animate form">
+                            <form  ng-submit="sendMsg()" action=""> 
+                                <h1>Nueva Nota</h1>
+                                <p> 
+                                    <label for="Asunto" class="youpasswd"> Asunto </label>
+                                    <input type='text' ng-model ="msg.text.asunto" required="required" type="text" placeholder="Obligatorio" />
+                                </p>
+                                <p> 
+                                    <label for="lote" class="youpasswd"> Lote </label>
+                                    <input type='text' ng-model ="msg.text.lote" required="required" type="text" placeholder="Obligatorio" />
+                                </p>
+                                <p> 
+                                <label for="dirigido" class="youpasswd"> Nota para </label>
+                                <select class="youpasswd" name="para" ng-model ="msg.text.para" required="required">
+                                    <option value=""> Seleccione una opcion</option> 
+                                    <option value="todos">Todos</option> 
+                                    <option value="josue">Josue</option> 
+                                    <option value="jafet">Jafet</option>
+                                    <option value="walter">Walter</option> 
+                                    <option value="Yeni">Yeni</option>
+                                </select>
+                                </p>
+
+                                <p> 
+                                    <label for="comentario" class="youpasswd"> Comentario </label>
+                                    <textarea name="mensaje" ng-model ="msg.text.comentario"  cols="60" rows="6" required="required" placeholder="Obligatorio" /> </textarea>
+                                </p>
+                                <p class="login button"> 
+                                    <input ng-submit="sendMsg()" action="" type="submit" value="guardar" /> 
+                                </p>
+                            </form>
+                        </div>
+                    </div>
+                </div>  
+            </section>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.js"></script>
+        <script src="notas.js"></script>
+    </body>
+</html>

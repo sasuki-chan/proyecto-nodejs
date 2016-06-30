@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6 lt8"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7 lt8"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8 lt8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<html lang="en" class="no-js" ng-app='alamode'>
+    <head>
+        <meta charset="UTF-8" />
+        <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  -->
+        <title>Datos de tabla</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <meta name="description" content="Login and Registration Form with HTML5 and CSS3" />
+        <meta name="keywords" content="html5, css3, form, switch, animation, :target, pseudo-class" />
+        <meta name="author" content="Codrops" />
+        <link rel="shortcut icon" href="../favicon.ico"> 
+        <link rel="stylesheet" type="text/css" href="css/demo.css" />
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+		<link rel="stylesheet" type="text/css" href="css/animate-custom.css" />
+        <link rel="stylesheet" type="text/css" href="style-newdata.css" />
+
+    </head>
+    <body>
+    <nav>
+            <!-- Listado de Navegación -->
+            <ul class="menu">  
+                <li><a href="/tablas.html">Informacion general </a></li>  
+                <li><a href="registrar-material.html">Material Entregado</a></li>
+                <li><a href="/listado_entregado.html">Listado entregado</a></li>
+                <li><a href="/notas.html">Nueva Nota</a></li>
+                <li><a href="/listado_notas.html">Listado Notas</a></li>
+                <li><a href="/logout">Salir</a></li>
+            </ul>
+    </nav>
+    <br></br> <br></br>
+        <!-- Termina listado de Navegación -->
+
+        <div class="container">
+            <section>				
+                <div id="container_demo" >
+                    <!-- hidden anchor to stop jump http://www.css3create.com/Astuce-Empecher-le-scroll-avec-l-utilisation-de-target#wrap4  -->
+                    <a class="hiddenanchor" id="toregister"></a>
+                    <a class="hiddenanchor" id="tologin"></a>
+                    <div id="wrapper">
+                        <div ng-controller = "Register" id="login" class="animate form">
+                            <form  ng-submit="sendMsg()" action=""> 
+                                <h1>Informacion General</h1>
+                                <p> 
+                                    <label for="lote" class="uname"> Numero de contenedor </label>
+                                    <input type='text' ng-model ="msg.text.contenedor" required="required" placeholder="Obligatorio"/>
+                                </p>
+                                <p> 
+                                    <label for="lote" class="uname"> Numero de lote </label>
+                                    <input type='text' ng-model ="msg.text.lote" required="required" placeholder="Obligatorio"/>
+                                </p>
+
+                                 <p> 
+                                    <label for="dirigido" class="youpasswd"> Shirt o Pants </label>
+                                <select class="youpasswd"  name="tipo_de_lote" ng-model ="msg.text.tipo_de_lote" required="required">
+                                    <option value=""> Seleccione una opcion</option> 
+                                    <option value="Shirt 806">Shirt 806</option> 
+                                    <option value="Shirt CMT">Shirt CMT</option>
+                                    <option value="Pants">Pants</option>
+                                </select>
+                                </p>
+
+                                <p> 
+                                    <label for="estilo" class="uname"> Estilo </label>
+                                    <input type='text' ng-model ="msg.text.estilo" required="required" placeholder="Obligatorio"/>
+                                </p>
+                                <p> 
+                                    <label for="hilo" class="youpasswd"> Tipo de hilo </label>
+                                    <input type='text' ng-model ="msg.text.hilo" required="required" type="text" placeholder="Obligatorio" />
+                                </p>
+                                <p> 
+                                    <label for="cantidad" class="youpasswd"> Cantidad de piezas </label>
+                                    <input type='text' ng-model ="msg.text.cantidadpiezas" required="required" type="text" placeholder="Obligatorio"/>
+                                </p>
+                                <p> 
+                                    <label for="velcro" class="youpasswd"> Tipo de velcro </label>
+                                    <input type='text' ng-model ="msg.text.velcro" type="text" placeholder="Opcional"/>
+                                </p>
+
+                                 <p> 
+                                    <label for=cantidad class="youpasswd"> Cantidad de velcro </label>
+                                    <input type='text' ng-model ="msg.text.cantidadvelcro"  type="text" placeholder="Opcional"/>
+                                </p>
+
+                                <p> 
+                                    <label for="velcro" class="youpasswd"> Tipo de Metal </label>
+                                    <input type='text' ng-model ="msg.text.metal" type="text" placeholder="Opcional"/>
+                                </p>
+
+                                <p> 
+                                    <label for="velcro" class="youpasswd"> Tipo de Emblema </label>
+                                    <input type='text' ng-model ="msg.text.emblema" type="text" placeholder="Opcional"/>
+                                </p>
+
+                                <p> 
+                                    <label for=estado class="youpasswd"> Estado </label>
+                                    <input type='text' ng-model ="msg.text.estado"  type="text" placeholder="Opcional"/>
+                                </p>
+                                <p class="login button"> 
+                                    <input ng-submit="sendMsg()" action="" type="submit" value="guardar" /> 
+								</p>
+                            </form>
+                        </div>
+                    </div>
+                </div>  
+            </section>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.js"></script>
+        <script src="newdata.js"></script>
+    </body>
+</html>

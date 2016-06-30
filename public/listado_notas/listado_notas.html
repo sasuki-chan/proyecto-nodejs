@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html ng-app="App">
+
+  <head>
+    <title>Listado de Notas</title>
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    
+    <link rel="stylesheet" href="styles.css" />
+    <!-- LLamamos al script que manejara el codigo de la tabla -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.js"></script>
+    <script src="https://rawgithub.com/eligrey/FileSaver.js/master/FileSaver.js" type="text/javascript"></script>
+
+    <!-- load momentJS (required for angular-moment) -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+
+    <!-- load angular-moment -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-moment/0.9.0/angular-moment.min.js"></script>
+
+  </head>
+
+  <body>
+    <!-- Listado de Navegación -->
+      <nav>
+            <ul class="menu" ng-controller="mainController as main">
+                <li><a>Hora: &nbsp; {{ main.time }}</a></li>
+                <li><a href="/newdata.html">Nueva Info General</a></li>
+                <li><a href="/tablas.html">Informacion general </a></li> 
+                <li><a href="registrar-material.html">Material Entregado</a></li>
+                <li><a href="/listado_entregado.html">Listado Entregado</a></li>
+                <li><a href="/notas.html">Nueva Nota</a></li> 
+                <li><a href="/logout">Salir</a></li>
+            </ul>    
+    </nav>
+    <br></br> <br>
+    <!-- Termina Listado de Navegación -->
+
+    <div id="exportable">
+    <!-- Comienza el codigo que sera accesible por -->
+    <!-- angular por medio del controller -->
+    <!-- controlador_de_tablas -->
+    <div class="table-responsive" ng-controller="controlador_de_tablas" style="height: 600px; overflow:auto;>
+
+    <!-- Se crean los input que se usaran para buscar dentro de la tabla -->
+    <input type="text" ng-model="bpagina" placeholder= 'Buscar por pagina'>
+    <button ng-click="exportData()">Exportar Todo</button> </br>
+    <input type="text" ng-model="basunto" placeholder= 'Buscar por asunto'>
+    <input type="text" ng-model="bfecha" placeholder= 'Buscar por fecha'>
+    <input type="text" ng-model="bhora" placeholder= 'Buscar por hora'>
+    <input type="text" ng-model="blote" placeholder= 'Buscar por lote'>
+    <input type="text" ng-model="bpara" placeholder= 'Buscar por dirigido a'>
+    <input type="text" ng-model="bcomentario" placeholder= 'Buscar por comentario'>
+    <!-- Finaliza codigo de busqueda por input -->
+
+                <!-- Crear tabla -->
+                <table class="table table-hover">
+                    <thead>
+                    <!-- Definir nombre de columnas de la tabla -->
+                        <tr>
+                            <th>Asunto</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Lote</th>
+                            <th>Nota para</th>
+                            <th>Comentario</th>
+                        </tr>
+                        <!-- finaliza codigo de definir nombre de columnas de la tabla -->
+                    </thead>
+                    <tbody>
+<!-- Ordenamos la lista por numero contenedor y buscamos por los input -->
+<!-- Desde aqui ng-repeat rellenara los valores de la tabla -->
+                        <tr ng-repeat="datos in datos_tabla 
+                        | filter: {asunto : basunto}
+                        | filter:{fecha : bfecha}
+                        | filter:{hora : bhora}
+                        | filter: {lote : blote}
+                        | filter: {para : bpara}   
+                        | filter:{comentario : bcomentario}
+                        | orderBy:'fecha'">
+<!-- Termino de declarar los filtros y orden de la pagina -->
+
+                <!-- Colocamos el valor de asunto en la tabla -->
+                            <td WIDTH="250" HEIGHT="60">
+                                <div ng-hide="editarDatos[datos.id]">
+                                {{datos.asunto}}</div>
+                                <div ng-show="editarDatos[datos.id]"><input type="text" ng-model="datos.asunto" /></div>
+                            </td>
+
+                <!-- Colocamos el valor de fecha en la tabla -->
+                            <td WIDTH="120" HEIGHT="60">
+                            <div ng-hide="editarDatos[datos.id]">
+                                {{datos.fecha}}</div>
+                                <div ng-show="editarDatos[datos.id]"><div ng-show="editarDatos[datos.id]"><input type="text" ng-model="datos.fecha" disabled size="10"/></div></div>
+                            </td>
+
+                <!-- Colocamos el valor de hora en la tabla -->
+                            <td WIDTH="100" HEIGHT="60">
+                            <div ng-hide="editarDatos[datos.id]">
+                                {{datos.hora}}</div>
+                                <div ng-show="editarDatos[datos.id]"><div ng-show="editarDatos[datos.id]"><input type="text" ng-model="datos.hora" disabled size="8"/></div></div></div>
+                            </td>
+
+                <!-- Colocamos el valor de lote en la tabla -->
+                             <td WIDTH="100" HEIGHT="60">
+                                <div ng-hide="editarDatos[datos.id]">{{datos.lote}}</div>
+                                <div ng-show="editarDatos[datos.id]"><input type="text" ng-model="datos.lote" size="6" /></div>
+                            </td>
+
+
+                <!-- Colocamos el valor de Dirigo a  en la tabla -->
+                            <td WIDTH="100" HEIGHT="60">
+                                <div ng-hide="editarDatos[datos.id]">{{datos.para}}</div>
+                                <div ng-show="editarDatos[datos.id]"><p>
+                                <select class="youpasswd" name="para" ng-model ="datos.para" required="required">
+                                    <option value="todos">Todos</option> 
+                                    <option value="josue">Josue</option> 
+                                    <option value="jafet">Jafet</option>
+                                    <option value="walter">Walter</option> 
+                                    <option value="Yeni">Yeni</option>
+                                </select>
+                                </p></div>
+                            </td>
+
+                <!-- Colocamos el valor de comentario en la tabla -->
+                            <td WIDTH="450" HEIGHT="60">
+                                <div ng-hide="editarDatos[datos.id]" overflow:auto;>{{datos.comentario}}</div>
+                                <div ng-show="editarDatos[datos.id]">
+                                    <textarea name="mensaje" ng-model ="datos.comentario"  cols="50" rows="6" required="required" placeholder="Obligatorio" /> </textarea>
+                                </div>
+                            </td>
+
+                <!-- Se termina de agregar los valores en la tabla -->
+
+                                </div>
+                            </td>
+                        <!-- Se agregan botones de modificar y actualizar en la tabla -->
+                            <td>
+                                <button ng-hide="editarDatos[datos.id]" ng-click="modify(datos)">Modificar</button>
+                                <button ng-show="editarDatos[datos.id]" ng-click="update(datos)">Actualizar</button>
+                               
+                            </td>
+                        <!-- Cerramos el codigo de agregar botones en la tabla -->
+                        </tr> <!-- Cerramos el codigo de ng-repeat en la tabla -->
+                    </tbody>
+                </table>
+    
+            </div>
+    
+    </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.js"></script>
+        <script src="listado_notas.js"></script>
+  </body>
+
+</html>

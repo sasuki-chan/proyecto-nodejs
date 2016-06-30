@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html ng-app="App">
+
+  <head>
+    <title>Listado de Entregados</title>
+    <meta charset ='utf-8'/>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+    <!-- LLamamos al script que manejara el codigo de la tabla -->
+    <script src="listado_entregado.js"></script>
+
+    <script src="https://rawgithub.com/eligrey/FileSaver.js/master/FileSaver.js" type="text/javascript"></script>
+
+    <!-- load momentJS (required for angular-moment) -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+
+    <!-- load angular-moment -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-moment/0.9.0/angular-moment.min.js"></script>
+  </head>
+
+  <body>
+    <!-- Listado de Navegación -->
+      <nav>
+            <ul class="menu" ng-controller="mainController as main">
+                <li><a>Hora: &nbsp; {{ main.time }}</a></li>
+                <li><a href="/newdata.html">Nueva Info General</a></li>
+                <li><a href="/tablas.html">Informacion General</a></li>
+                <li><a href="registrar-material.html">Material Entregado</a></li>
+                <li><a href="/notas.html">Nueva Nota</a></li>
+                <li><a href="/listado_notas.html">Listado Notas</a></li>
+                <li><a href="/logout">Salir</a></li> 
+            </ul>    
+    </nav>
+    <br></br> <br>
+    <!-- Termina Listado de Navegación -->
+
+    <div id="exportable">
+    <!-- Comienza el codigo que sera accesible por -->
+    <!-- angular por medio del controller -->
+    <!-- controlador_de_tablas -->
+    <div class="table-responsive" ng-controller="controlador_de_tablas" style="height: 600px; overflow:auto;>
+
+    <!-- Se crean los input que se usaran para buscar dentro de la tabla -->
+    <input type="text" ng-model="bpagina" placeholder= 'Buscar por pagina'>
+    <button ng-click="exportData()">Exportar Todo</button> </br> </br>
+    <input type="text" ng-model="bpagina" size="10" placeholder= 'Pagina'>
+    <input type="text" ng-model="bfecha" size="15" placeholder= 'Buscar por fecha'>
+    <input type="text" ng-model="blote" size="15" placeholder= 'Buscar por lote'>
+    <input type="text" ng-model="bmaterial" size="15" placeholder= 'Buscar shirt o pants'>
+    <input type="text" ng-model="bnombre_material" size="15" placeholder= 'Buscar por material'>
+    <input type="text" ng-model="btipo" size="15" placeholder= 'Tipo de material'>
+    <input type="text" ng-model="bcolor" size="15" placeholder= 'Buscar por color'>
+    <input type="text" ng-model="bcantidad" size="15" placeholder= 'Buscar por cantidad'>
+    <input type="text" ng-model="bpersona" size="15" placeholder= 'Buscar por operario'>
+    <input type="text" ng-model="bfirma" size="15" placeholder= 'Buscar por firma'>
+    <input type="text" ng-model="bcomentario" placeholder= 'Buscar por comentario'>
+    <!-- Finaliza codigo de busqueda por input -->
+
+                <!-- Crear tabla -->
+                <table class="table table-hover">
+                    <thead>
+                    <!-- Definir nombre de columnas de la tabla -->
+                        <tr>
+                            <th>Pagina</th>
+                            <th>Fecha</th>
+                            <th>Lote</th>
+                            <th>Shirt o pants</th>
+                            <th>Nombre Material</th>
+                            <th>Tipo Material</th>
+                            <th>Color</th>
+                            <th>Cantidad</th>
+                            <th>Operario</th>
+                            <th>Firma</th>
+                            <th>Comentario</th>
+                        </tr>
+                        <!-- finaliza codigo de definir nombre de columnas de la tabla -->
+                    </thead>
+                    <tbody>
+<!-- Ordenamos la lista por numero contenedor y buscamos por los input -->
+<!-- Desde aqui ng-repeat rellenara los valores de la tabla -->
+                        <tr ng-repeat="datos in datos_tabla 
+                        | filter: {pagina : bpagina}
+                        | filter: {fecha : bfecha}
+                        | filter: {lote : blote} 
+                        | filter:{material : bmaterial}  
+                        | filter:{nombre_material : bnombre_material}
+                        | filter:{tipo : btipo}
+                        | filter:{color : bcolor}
+                        | filter:{cantidad : bcantidad}
+                        | filter:{persona : bpersona}
+                        | filter:{entregado_a : bfirma}
+                        | filter:{comentario : bcomentario}
+                        | orderBy:'pagina'">
+<!-- Termino de declarar los filtros y orden de la pagina -->
+
+                <!-- Colocamos el valor de pagina en la tabla -->
+                            <td WIDTH="50" HEIGHT="60">
+                                <div ng-hide="editarDatos[datos.id]" overflow:auto;>
+                                {{datos.pagina}}</div>
+                                <div ng-show="editarDatos[datos.id]"><input type="text" ng-model="datos.pagina"  size="5"/></div>
+                            </td>
+
+                <!-- Colocamos el valor de fecha en la tabla -->
+                            <td>
+                            <div ng-hide="editarDatos[datos.id]">
+                                {{datos.fecha}}</div>
+                                <div id='no_exportar' ng-show="editarDatos[datos.id]"><input type="text" ng-model="datos.fecha" size="10" disabled/></div>
+                            </td>
+
+                <!-- Colocamos el valor de lote en la tabla -->
+                             <td>
+                                <div ng-hide="editarDatos[datos.id]">{{datos.lote}}</div>
+                                <div ng-show="editarDatos[datos.id]"><input type="text" ng-model="datos.lote" size="8" /></div>
+                            </td>
+
+                <!-- Colocamos el valor de shirt o pants en la tabla -->
+                            <td>
+                                <div ng-hide="editarDatos[datos.id]">{{datos.material}}</div>
+                                <div ng-show="editarDatos[datos.id]"><input type="text" ng-model="datos.material" size="10" /></div>
+                            </td>
+
+                <!-- Colocamos el valor de nombre de material en la tabla -->
+                            <td>
+                                <div ng-hide="editarDatos[datos.id]">{{datos.nombre_material}}</div>
+                                <div ng-show="editarDatos[datos.id]"><input type="text" ng-model="datos.nombre_material" size="10" /></div>
+                            </td>
+
+                <!-- Colocamos el valor de tipo de material en la tabla -->
+                            <td>
+                                <div ng-hide="editarDatos[datos.id]">{{datos.tipo}}</div>
+                                <div ng-show="editarDatos[datos.id]"><input type="text" ng-model="datos.tipo" size="10" /></div>
+                            </td>
+
+                <!-- Colocamos el valor de color en la tabla -->
+                            <td>
+                                <div ng-hide="editarDatos[datos.id]">{{datos.color}}</div>
+                                <div ng-show="editarDatos[datos.id]"><input type="text" ng-model="datos.color" size="10" /></div>
+                            </td>
+
+                <!-- Colocamos el valor de cantidad en la tabla -->
+                            <td>
+                                <div ng-hide="editarDatos[datos.id]">{{datos.cantidad}}</div>
+                                <div ng-show="editarDatos[datos.id]"><input type="text" ng-model="datos.cantidad" size="10" /></div>
+                            </td>
+                <!-- Colocamos el valor de persona en la tabla -->
+                            <td>
+                                <div ng-hide="editarDatos[datos.id]">{{datos.persona}}</div>
+                                <div ng-show="editarDatos[datos.id]"><input type="text" ng-model="datos.persona" size="5" disabled/></div>
+                            </td>
+
+                <!-- Colocamos el valor de entregado_a en la tabla -->
+                            <td>
+                                <div ng-hide="editarDatos[datos.id]">{{datos.entregado_a}}</div>
+                                <div ng-show="editarDatos[datos.id]"><input type="text" ng-model="datos.entregado_a" size="10" /></div>
+                            </td>
+
+                <!-- Colocamos el valor de comentario en la tabla -->
+                            <td WIDTH="150" HEIGHT="60">
+                                <div ng-hide="editarDatos[datos.id]" overflow:auto;>{{datos.comentario}}</div>
+                                <div ng-show="editarDatos[datos.id]"><textarea name="mensaje" ng-model ="datos.comentario"  cols="10" rows="4" required="required" placeholder="Obligatorio" /> </textarea></div>
+                            </td>
+
+                <!-- Se termina de agregar los valores en la tabla -->
+
+                                </div>
+                            </td>
+                        <!-- Se agregan botones de modificar y actualizar en la tabla -->
+                            <td>
+                                <button ng-hide="editarDatos[datos.id]" ng-click="modify(datos)">Modificar</button>
+                                <button ng-show="editarDatos[datos.id]" ng-click="update(datos)">Actualizar</button>
+                               
+                            </td>
+                        <!-- Cerramos el codigo de agregar botones en la tabla -->
+                        </tr> <!-- Cerramos el codigo de ng-repeat en la tabla -->
+                    </tbody>
+                </table>
+    
+            </div>
+    
+    </div>
+  </body>
+
+</html>

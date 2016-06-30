@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html ng-app="App">
+
+  <head>
+    <title>Informacion general</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.js"></script>
+
+    <script src="https://rawgithub.com/eligrey/FileSaver.js/master/FileSaver.js" type="text/javascript"></script>
+
+
+    <!-- load momentJS (required for angular-moment) -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+
+    <!-- load angular-moment -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-moment/0.9.0/angular-moment.min.js"></script>
+
+    <link rel="stylesheet" href="styles.css" />
+    <script src="tablas.js"></script>
+
+  </head>
+
+  <body>
+    <!-- Listado de Navegación -->
+      <nav>
+            <ul class="menu" ng-controller="mainController as main">
+                <li><a>Hora: &nbsp; {{ main.time }}</a></li>
+                <li><a href="/newdata.html">Nueva Info General</a></li>
+                <li><a href="registrar-material.html">Material Entregado</a></li>
+                <li><a href="/listado_entregado.html">Listado entregado</a></li>
+                <li><a href="/notas.html">Nueva Nota</a></li>
+                <li><a href="/listado_notas.html">Listado Notas</a></li>
+                <li><a href="/logout">Salir</a></li>
+            </ul>
+    </nav>
+
+</div>  
+
+    <br></br> <br>
+    <!-- Termina Listado de Navegación -->
+
+    <div id="exportable">
+    <!-- Comienza el codigo que sera accesible por -->
+    <!-- angular por medio del controller -->
+    <!-- controlador_de_tablas -->
+
+    <div class="table-responsive" ng-controller="controlador_de_tablas" style="height: 500px; overflow:auto;>
+    <input type="text" ng-model="bcontenedor" placeholder= 'Buscar por contenedor'>
+
+    <!-- Botones para exportar a excell -->
+
+    <button ng-click="exportData()">Exportar a Excell</button> </br> </br>
+    
+    <!-- Botones para exportar a excell -->
+
+    &nbsp; 
+    <input type="checkbox" ng-model="bselect"/>
+    &nbsp; &nbsp;
+    <input type="text" ng-model="bcontenedor" size="12" placeholder= 'Contenedor'>
+    <input type="text" ng-model="btipo_de_lote" size="12" placeholder= 'Tipo de lote'>
+    <input type="text" ng-model="blote" size="10" placeholder= 'Lote'>
+    <input type="text" ng-model="bestilo" size="14" placeholder= 'Estilo'>
+    <input type="text" ng-model="bhilo" size="9" placeholder= 'Hilo'>
+    <input type="text" ng-model="bpiezas" size="5" placeholder= 'Piezas'>
+    <input type="text" ng-model="bmetal" size="8" placeholder= 'Metal'>
+    <input type="text" ng-model="bemblema" size="10" placeholder= 'Emblema'>
+    <input type="text" ng-model="bvelcro" size="15" placeholder= 'Buscar por Velcro'>
+    <input type="text" ng-model="bestado" size="16" placeholder= 'Buscar por estado'>
+
+                <table class="table table-hover" >
+                    <thead>
+                        <tr>
+                            <th>   </th>
+                            <th>Contenedor</th>
+                            <th>Tipo de lote</th>
+                            <th>Lote</th>
+                            <th>Estilo</th>
+                            <th>Hilo</th>
+                            <th>Piezas</th>
+                            <th>Metal</th>
+                            <th>Emblema</th>
+                            <th>Velcro</th>
+                            <th>YDS</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+<!-- Ordenamos la lista por numero contenedor y buscamos por los input -->
+                        <tr ng-repeat="datos in datos_tabla 
+                        | filter: {select : bselect} 
+                        | filter: {contenedor : bcontenedor}
+                        | filter: {tipo_de_lote : btipo_de_lote} 
+                        | filter:{lote : blote}
+                        | filter:{estilo : bestilo}
+                        | filter:{hilo : bhilo}
+                        | filter:{cantidad_piezas : bpiezas}
+                        | filter:{metal : bmetal}
+                        | filter:{emblema : bemblema}
+                        | filter:{velcro : bvelcro}
+                        | filter:{estado : bestado}
+                        | orderBy:'contenedor'">
+<!-- Ordenamos la lista por numero contenedor y buscamos por los input -->
+                            
+                            <td WIDTH="50" HEIGHT="60">
+                                <div ng-hide="editarDatos[datos.id]">
+                                <input type="checkbox" ng-model="datos.select"/></div>
+                                <div ng-show="editarDatos[datos.id]"><input type="checkbox" ng-model="datos.select" size="10" disabled /></div>
+                            </td>
+
+                            <td WIDTH="110" HEIGHT="60">
+                                <div ng-hide="editarDatos[datos.id]">
+                                {{datos.contenedor}}</div>
+                                <div ng-show="editarDatos[datos.id]"><input type="text" ng-model="datos.contenedor" size="8"/></div>
+                            </td>
+
+                            <td WIDTH="130" HEIGHT="60">
+                                <div ng-hide="editarDatos[datos.id]">{{datos.tipo_de_lote}}</div>
+                                <div ng-show="editarDatos[datos.id]"><input type="text" ng-model="datos.tipo_de_lote" size="10"/></div>
+                            </td>
+
+                            <td WIDTH="100" HEIGHT="60">
+                                <div ng-hide="editarDatos[datos.id]">{{datos.lote}}</div>
+                                <div ng-show="editarDatos[datos.id]"><input type="text" ng-model="datos.lote" size="7"/></div>
+                            </td>
+
+                            <td WIDTH="150" HEIGHT="60">
+                                <div ng-hide="editarDatos[datos.id]">{{datos.estilo}}</div>
+                                <div ng-show="editarDatos[datos.id]"><input type="text" ng-model="datos.estilo" size="10"/></div>
+                            </td>
+
+                            <td WIDTH="100" HEIGHT="60">
+                                <div ng-hide="editarDatos[datos.id]">{{datos.hilo}}</div>
+                                <div ng-show="editarDatos[datos.id]"><input type="text" ng-model="datos.hilo" size="9"/></div>
+                            </td>
+
+                            <td WIDTH="60" HEIGHT="60">
+                                <div ng-hide="editarDatos[datos.id]">{{datos.cantidad_piezas}}</div>
+                                <div ng-show="editarDatos[datos.id]"><input type="text" ng-model="datos.cantidad_piezas" size="4"/></div>
+                            </td>
+
+                            <td WIDTH="70" HEIGHT="60">
+                                <div ng-hide="editarDatos[datos.id]">{{datos.metal}}</div>
+                                <div ng-show="editarDatos[datos.id]"><input type="text" ng-model="datos.metal" size="5"/></div>
+                            </td>
+
+                            <td WIDTH="100" HEIGHT="60">
+                                <div ng-hide="editarDatos[datos.id]">{{datos.emblema}}</div>
+                                <div ng-show="editarDatos[datos.id]"><input type="text" ng-model="datos.emblema" size="8"/></div>
+                            </td>
+
+                            <td WIDTH="100" HEIGHT="40">
+                                <div ng-hide="editarDatos[datos.id]">{{datos.velcro}}</div>
+                                <div ng-show="editarDatos[datos.id]"><input type="text" ng-model="datos.velcro" size="8" /></div>
+                            </td>
+
+                            <td WIDTH="50" HEIGHT="60">
+                                <div ng-hide="editarDatos[datos.id]">{{datos.cantidad_velcro}}</div>
+                                <div ng-show="editarDatos[datos.id]"><input type="text" ng-model="datos.cantidad_velcro" size="3" /></div>
+                            </td>
+
+                            <td WIDTH="150" HEIGHT="60">
+                                <div ng-hide="editarDatos[datos.id]" overflow:auto;>{{datos.estado}}</div>
+                                <div ng-show="editarDatos[datos.id]"><textarea name="mensaje" ng-model ="datos.estado"  cols="10" rows="2"/> 
+                                </textarea></div>
+                            </td>
+
+                                </div>
+                            </td>
+                            <td WIDTH="150" HEIGHT="60">
+                                <button ng-hide="editarDatos[datos.id]" ng-click="modify(datos)">Modificar</button>
+                                <button ng-show="editarDatos[datos.id]" ng-click="update(datos)">Actualizar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+    </div>
+  </body>
+
+</html>

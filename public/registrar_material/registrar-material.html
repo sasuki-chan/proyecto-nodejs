@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6 lt8"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7 lt8"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8 lt8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<html lang="en" class="no-js" ng-app='alamode'>
+    <head>
+        <meta charset="UTF-8" />
+        <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  -->
+        <title>Material entregado</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <meta name="description" content="Login and Registration Form with HTML5 and CSS3" />
+        <meta name="keywords" content="html5, css3, form, switch, animation, :target, pseudo-class" />
+        <meta name="author" content="Codrops" />
+        <link rel="shortcut icon" href="../favicon.ico"> 
+        <link rel="stylesheet" type="text/css" href="css/demo.css" />
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+		<link rel="stylesheet" type="text/css" href="css/animate-custom.css" />
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+    <nav>
+            <!-- Listado de Navegación -->
+            <ul class="menu">  
+                <li><a href="/newdata.html">Nueva Info General</a></li>
+                <li><a href="/tablas.html">Informacion general </a></li>
+                <li><a href="/listado_entregado.html">Listado entregado</a></li>
+                <li><a href="/notas.html">Nueva Nota</a></li>
+                <li><a href="/listado_notas.html">Listado Notas</a></li>
+                <li><a href="/logout">Salir</a></li>
+            </ul>
+    </nav>
+    <br></br> <br></br>
+        <!-- Termina listado de Navegación -->
+
+        <div class="container">
+            <section>				
+                <div id="container_demo" >
+                    <!-- hidden anchor to stop jump http://www.css3create.com/Astuce-Empecher-le-scroll-avec-l-utilisation-de-target#wrap4  -->
+                    <a class="hiddenanchor" id="toregister"></a>
+                    <a class="hiddenanchor" id="tologin"></a>
+                    <div id="wrapper">
+                        <div ng-controller = "Register" id="login" class="animate form">
+                            <form  ng-submit="sendMsg()" action=""> 
+                                <h1>Material entregado</h1>
+                                <p> 
+                                    <label for="pagina" class="uname"> Numero de pagina </label>
+                                    <input type='text' ng-model ="msg.text.pagina" required="required"/ placeholder="Obligatorio">
+                                </p>
+                                <p> 
+                                    <label for="material" class="uname"> Shirt o Pants </label>
+                                    <input type='text' ng-model ="msg.text.material" required="required"/ placeholder="Obligatorio">
+                                </p>
+                                <p> 
+                                    <label for="lote" class="uname"> Numero de lote </label>
+                                    <input type='text' ng-model ="msg.text.lote" required="required"/ placeholder="Obligatorio">
+                                </p>
+                                <p> 
+                                    <label for="material" class="youpasswd"> Nombre de material </label>
+                                    <input type='text' ng-model ="msg.text.nombre_material" required="required" type="text" / placeholder="Obligatorio">
+                                </p>
+                                <p> 
+                                    <label for="tipo" class="youpasswd"> Tipo de material </label>
+                                    <input type='text' ng-model ="msg.text.tipo" type="text" / placeholder="Opcional">
+                                </p>
+                                <p> 
+                                    <label for="Color" class="youpasswd"> Color </label>
+                                    <input type='text' ng-model ="msg.text.color" type="text" / placeholder="Opcional">
+                                </p>
+                                <p> 
+                                    <label for=cantidad class="youpasswd"> Cantidad </label>
+                                    <input type='text' ng-model ="msg.text.cantidad" required="required" type="text" / placeholder="Obligatorio">
+                                </p>
+
+                                <p> 
+                                    <label for=entregado_a class="youpasswd"> Entregado a </label>
+                                    <input type='text' ng-model ="msg.text.entregado_a" required="required" type="text" / placeholder="Obligatorio">
+                                </p>
+
+                                <p> 
+                                    <label for=comentario class="youpasswd"> comentario </label>
+                                    <input type='text' ng-model ="msg.text.comentario" type="text" / placeholder="Opcional">
+                                </p>
+
+                                <p class="login button"> 
+                                    <input ng-submit="sendMsg()" action="" type="submit" value="guardar" />
+								</p>
+                            </form>
+                        </div>
+                    </div>
+                </div>  
+            </section>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.js"></script>
+        <script src="registrar-material.js"></script>
+    </body>
+</html>
